@@ -5,10 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import web.model.User;
 import web.service.UserService;
-
 
 
 @Controller
@@ -38,9 +36,7 @@ public class UserController {
     }
 
     @GetMapping("/new")
-    public String newUser(Model model) {
-        User user = new User();
-        model.addAttribute("user", user);
+    public String newUser(@ModelAttribute("user") User user) {
         return "new-user";
     }
 
@@ -52,19 +48,19 @@ public class UserController {
     }
 
     @GetMapping("/{id}/edit")
-    public String edit(Model model, @PathVariable("id") int id) {
+    public String edit(Model model, @PathVariable int id) {
         model.addAttribute("user", userService.getUserById(id));
         return "update-user";
     }
 
     @PatchMapping("/{id}")
-    public String update (@ModelAttribute("user") User user, @PathVariable("id") int id) {
-        userService.updateUserById(id,user);
+    public String update(@ModelAttribute("user") User user, @PathVariable int id) {
+        userService.updateUserById(id, user);
         return "redirect:/users";
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") int id) {
+    public String delete(@PathVariable int id) {
         userService.deleteUserById(id);
         return "redirect:/users";
     }
